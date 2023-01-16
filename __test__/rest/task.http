@@ -1,0 +1,49 @@
+# @host = https://t8l0qiiagb.execute-api.sa-east-1.amazonaws.com
+@host = http://localhost:3000
+### Add a task
+# @name firstTask
+POST {{ host }}/task HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "New Object Class",
+  "description": "With the task class"
+}
+
+### Add other task
+POST {{ host }}/task HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "With middleware",
+  "description": "Another thing to do"
+}
+
+### Add other task
+POST {{ host }}/task HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Operate it now",
+  "description": "This is a way of work"
+}
+
+### List tasks
+GET {{ host }}/task HTTP/1.1
+Content-Type: application/json
+
+### Get one task
+GET {{ host }}/task/f1d32438-6e04-4ba4-aa70-5c1e8d2162ff HTTP/1.1
+Content-Type: application/json
+
+### Update one task
+PUT {{ host }}/task/f1d32438-6e04-4ba4-aa70-5c1e8d2162ff HTTP/1.1
+Content-Type: application/json
+
+{
+  "done": true
+}
+
+### Delete one task
+DELETE {{ host }}/task/f1d32438-6e04-4ba4-aa70-5c1e8d2162ff HTTP/1.1
+Content-Type: application/json

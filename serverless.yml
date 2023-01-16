@@ -1,0 +1,76 @@
+org: patocardo
+app: aws-lambda-crud-node
+service: lambda-crud-node
+frameworkVersion: '3'
+configValidationMode: error
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: sa-east-1
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:*
+          Resource:
+            - arn:aws:dynamodb:sa-east-1:881900480539:table/TaskTable
+
+functions:
+  task_add:
+    handler: src/task/add.add
+    events:
+      - httpApi:
+          path: /task
+          method: post
+  task_list:
+    handler: src/task/list.list
+    events:
+      - httpApi:
+          path: /task
+          method: get
+  task_get:
+    handler: src/task/get.get
+    events:
+      - httpApi:
+          path: /task/{id}
+          method: get
+  task_update:
+    handler: src/task/update.update
+    events:
+      - httpApi:
+          path: /task/{id}
+          method: put
+  task_remove:
+    handler: src/task/remove.remove
+    events:
+      - httpApi:
+          path: /task/{id}
+          method: delete
+
+resources:
+  Resources:
+    TaskTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: TaskTable
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+
+custom:
+  dynamodb:
+    start:
+      # migrate: true
+      port: 8000
+      inMemory: true
+      sharedDb: true
+
+plugins:
+  - serverless-offline
+  - serverless-dynamodb-local
